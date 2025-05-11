@@ -1,0 +1,39 @@
+@media all and (min-width: 768px) {
+  .welcome-msg {
+    font-size: 4rem;
+  }
+
+  .hero-section {
+    margin-bottom: 6.4rem;
+  }
+
+  body {
+    background-image: url("../images/site/checkerboard.jpg");
+  }
+
+  aside {
+    transform: translate(42%, -10%);
+  }
+
+  aside h2 {
+    font-size: 3rem;
+  }
+
+  aside ul li {
+    font-size: 2.2rem;
+  }
+
+  .grid--3-cols {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  form input.submitBtn,
+  form input.registerBtn,
+  form input.submitClassificationBtn,
+  form input.addVehicleBtn,
+  form input.updateVehicleBtn,
+  form input.updateBtn,
+  form input.updatePassBtn {
+    width: 30%;
+  }
+}

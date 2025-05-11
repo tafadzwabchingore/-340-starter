@@ -1,0 +1,82 @@
+@media all and (min-width: 600px) {
+  .grid--2-cols {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .upgrades-section {
+    order: 1;
+  }
+
+  .reviews-section {
+    order: 2;
+  }
+}
+
+@media all and (max-width: 520px) {
+  aside {
+    width: 32rem;
+  }
+}
+
+@media all and (min-width: 480px) {
+  .welcome-msg {
+    font-size: 3rem;
+  }
+
+  nav ul {
+    justify-content: space-around;
+    flex-direction: row;
+  }
+
+  body {
+    background-image: url("../images/site/small_check.jpg");
+    background-size: 100%;
+    margin: 4rem;
+  }
+
+  #wrapper {
+    background: #ffffff;
+    border: 5px solid #002980;
+    border-radius: 9px;
+  }
+
+  aside {
+    transform: translate(42%, -15%);
+    line-height: 0.6;
+  }
+
+  aside h2 {
+    font-size: 2rem;
+    margin-bottom: 0;
+  }
+
+  aside ul li {
+    font-size: 1.8rem;
+  }
+
+  aside ul li:last-of-type {
+    margin-bottom: 3rem;
+  }
+
+  form label.top input {
+    width: 70%;
+  }
+
+  form input.submitBtn,
+  form input.registerBtn,
+  form input.submitClassificationBtn,
+  form input.addVehicleBtn,
+  form input.updateVehicleBtn,
+  form input.updateBtn,
+  form input.updatePassBtn {
+    width: 40%;
+  }
+
+  .inquiry-form {
+    order: 1;
+  }
+
+.inquiry-info {
+    order: 2;
+  }
+}
