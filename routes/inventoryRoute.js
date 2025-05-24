@@ -34,7 +34,6 @@ router.get("/type/:classificationId", handleErrors(invController.buildByClassifi
 // Route to build inventory by vehicle view
 router.get("/detail/:invId", handleErrors(invController.buildByInvId));
 
-// MANAGEMENT ROUTES ** NeEdS tO Be ChAnGeD **
 // Route to build inventory index
 router.get(
   "/", 

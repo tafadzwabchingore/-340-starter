@@ -101,27 +101,6 @@ Util.checkJWTToken = (req, res, next) => {
   }
 }
 
-/* ****************************************
- *  Check Login
- * ************************************ */
-Util.checkLogin = (req, res, next) => {
-  if (res.locals.loggedin) {
-    next()
-  } else {
-    req.flash("notice", "Please log in.")
-    return res.redirect("/account/login")
-  }
-}
-
-Util.checkAccountType = (req, res, next) => {
-  if (["employee", "admin"].includes(res.locals.accountData?.account_type.toLowerCase())) {
-    next()
-  } else {
-    req.flash("warning", "You do not have permission to view this page.")
-    return res.redirect("/account/")
-  }
-}
-
 function handleErrors(fn) {
   return function (req, res, next) {
     return Promise.resolve(fn(req, res, next)).catch(next);
