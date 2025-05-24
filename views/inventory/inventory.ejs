@@ -1,0 +1,80 @@
+<div id="add-inventory">
+  <% if (title) { %>
+    <h1><%= title %></h1>
+  <% } else {
+    res.redirect('/')
+  } %>
+  <%- messages() %>
+  <% if (errors) { %>
+    <ul class="notice">
+   <% errors.array().filter(error => error.msg !== 'Invalid value').forEach(error => { %>
+     <li><%= error.msg %></li>
+  <%  }) %>
+   </ul>
+  <% } %>
+  <form action="/inv/add-inventory" method="post" id="inventory-form">
+    <div class="form-group">
+      <label for="make">Make</label>
+      <input type="text" id="make" name="inv_make" required
+        minlength="3"
+        pattern="[A-Za-z\d]{3,}"
+        title="The make must be at least 3 characters in length without any special characters"
+        value="<%= locals.inv_make %>"
+      >
+      <label for="model">Model</label>
+      <input type="text" id="model" name="inv_model" required
+        minlength="3"
+        pattern="[A-Za-z\d]{3,}"
+        title="The model must be at least 3 characters in length without any special characters"
+        value="<%= locals.inv_model %>"
+      >
+    </div>
+    <div class="form-group">
+      <label for="year">Year</label>
+      <input type="text" id="year" name="inv_year" required
+        minlength="4"
+        maxlength="4"
+        pattern="[0-9]{4}"
+        title="The year must be exactly 4 digits"
+        value="<%= locals.inv_year %>"
+      >
+      <label for="miles">Miles</label>
+      <input type="text" id="miles" name="inv_miles" required
+        minlength="1"
+        pattern="[0-9]{1,}"
+        title="The mileage must be at least 1 digit"
+        value="<%= locals.inv_mileage %>"
+      >
+    </div>
+    <label for="color">Color</label>
+    <input type="text" id="color" name="inv_color" required
+      minlength="3"
+      pattern="[A-Za-z\d]{3,}"
+      title="The color must be at least 3 characters in length without any special characters"
+      value="<%= locals.inv_color %>"
+    >
+    <label for="description">Description</label>
+    <input type="text" id="description" name="inv_description" required
+      minlength="10"
+      maxlength="120"
+      pattern="[A-Za-z\s]{3,120}"
+      title="The description must be at least 10 characters in length"
+      value="<%= locals.inv_description %>"
+    >
+    <label for="price">Price</label>
+    <input type="text" id="price" name="inv_price" required
+      minlength="1"
+      pattern="[0-9]{1,}"
+      title="The price must be at least 1 digit"
+      value="<%= locals.inv_price %>"
+    >
+    <label for="classification">Classification</label>
+    <select id="classification" name="classification_id" required>
+      <option value="" disabled selected>Select a classification</option>
+      <% classifications.forEach(classification => { %>
+        <option value="<%= classification.classification_id %>"><%= classification.classification_name %></option>
+      <% }) %>
+    </select>
+    <button type="submit">Add</button>
+  </form>
+</div>

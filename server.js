@@ -10,6 +10,7 @@ const expressLayouts = require("express-ejs-layouts")
 const env = require("dotenv").config()
 const app = express()
 const static = require("./routes/static")
+const inventoryRoute = require('./routes/inventoryRoute');
 
 /* ***********************
  * View Engine and Templates
@@ -27,6 +28,9 @@ app.use(static)
 app.get("/", function(req, res){
   res.render("index", {title: "Home"})
 })
+
+// Inventory routes
+app.use("/inv", inventoryRoute)
 
 /* ***********************
  * Local Server Information
