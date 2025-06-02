@@ -15,6 +15,8 @@ const static = require("./routes/static")
 const inventoryRoute = require('./routes/inventoryRoute')
 const utilities = require('./utilities');
 const baseController = require("./controllers/baseController")
+// Inventory routes
+app.use("/inv", inventoryRoute)
 
 /* ***********************
  * Middleware
