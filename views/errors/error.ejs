@@ -1,3 +1,7 @@
-<h1><%= title %></h1>
-  <div class="message"><%- message %></div>
-  <div class="humor">Oops! Something went wrong. But don't worry, even the best websites have bad days!</div>
+<% if (title) { %>
+  <h1>
+      <%= title %>
+  </h1>
+<% } else { res.redirect('/') } %>
+
+<%- message %>
