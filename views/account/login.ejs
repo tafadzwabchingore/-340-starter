@@ -1,0 +1,21 @@
+<title><% title %></title>
+<h1><% title %></h1>
+
+<%- messages() %>
+
+<div class="login-container">
+  <form class="form-container" id="loginForm" action="/account/login" method="post">
+    <div class="input">
+      <label>Email</label>
+      <input type="email" name="account_email" required />
+    </div>
+    <div class="input">
+      <label>Password</label>
+      <input type="password" name="account_password" pattern="(?=.*\d)(?=.*[A-Z])(?=.*[!@#$%^&*])(?=.*[a-zA-Z]).{12,}" title="Password must be 12 characters or longer, contain at least 1 capital letter, 1 number, and 1 special character." required>
+    </div>
+    <div class="sumbit-button">
+      <button type="submit">Login</button>
+    </div>
+    <h1>No Account? <a href="../account/register.ejs">Sign-up</a></h1>
+  </form>
+</div>

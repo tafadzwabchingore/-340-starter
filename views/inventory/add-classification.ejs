@@ -1,25 +1,25 @@
-<div id="add-classification">
-  <% if (title) { %>
-    <h1><%= title %></h1>
-  <% } else {
-    res.redirect('/')
-  } %>
-  <%- messages() %>
-  <% if (errors) { %>
-    <ul class="notice">
-   <% errors.array().forEach(error => { %>
-     <li><%= error.msg %></li>
+<title> <% title %> </title>
+<h1> <% title %> </h1>
+
+<% if (errors) { %>
+<ul class="message warning">
+  <% errors.array().forEach(error => { %>
+  <li><%= error.msg %></li>
   <%  }) %>
-   </ul>
-  <% } %>
-  <form action="/inv/add-classification" method="post" id="classification-form">
-    <label for="classification">Add new classification</label>
-    <input type="text" id="classification" name="classification_name" required
-      minlength="3"
-      pattern="[A-Za-z\d]{3,}"
-      title="The classification name must be at least 3 characters in length without any special characters"
-      value="<%= locals.classification_name %>"
-    >
-    <button type="submit">Add</button>
-  </form>
-</div>
+</ul>
+<% } %>
+
+<body> 
+    <%- messages() %>
+    <form action='/inv/add-classification' method="post"> 
+        <div class="form-container">
+            <h2>Add Classification:</h2>
+            <label for="classification">Classification Name:</label>
+            <i>NAME MUST BE ALPHABETICAL CHARACTERS ONLY</i>
+            <div>
+                <input type="text" class="input "id="invclassification" name="classification_name" required>
+            </div>
+        </div>
+        <button class='submit-button' type="submit">Add Classification</button>
+    </form>
+</body> 

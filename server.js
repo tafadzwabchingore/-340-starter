@@ -5,18 +5,21 @@
 /* ***********************
  * Require Statements
  *************************/
-const session = require("express-session")
-const pool = require('./database/')
-const express = require("express")
-const expressLayouts = require("express-ejs-layouts")
-const env = require("dotenv").config()
-const app = express()
-const static = require("./routes/static")
-const inventoryRoute = require('./routes/inventoryRoute')
+const session = require("express-session");
+const pool = require('./database/');
+const express = require("express");
+const expressLayouts = require("express-ejs-layouts");
+const env = require("dotenv").config();
+const app = express();
+const static = require("./routes/static");
+const inventoryRoute = require('./routes/inventoryRoute');
+const accountRoute = require('./routes/accountRoute');
 const utilities = require('./utilities');
-const baseController = require("./controllers/baseController")
+const baseController = require("./controllers/baseController");
+const bodyParser = require("body-parser");
+const cookieParser = require("cookie-parser");
 // Inventory routes
-app.use("/inv", inventoryRoute)
+app.use("/inv", inventoryRoute);
 
 /* ***********************
  * Middleware
@@ -32,12 +35,18 @@ app.use("/inv", inventoryRoute)
   name: 'sessionId',
 }))
 
+app.use(bodyParser.json())
+app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(cookieParser())
+
 // Express Messages Middleware
 app.use(require('connect-flash')())
 app.use(function(req, res, next){
   res.locals.messages = require('express-messages')(req, res)
   next()
 })
+
+app.use(utilities.checkJWTToken)
 
 /* ***********************
  * View Engine and Templates
@@ -50,6 +59,8 @@ app.set("layout", "./layouts/layout") // not at views root
  * Routes
  *************************/
 
+app.use(static);
+
 // idex route
 app.get("/", function(req, res){
   res.render("index", {title: "Home"})
@@ -58,13 +69,11 @@ app.get("/", function(req, res){
 // Inventory routes
 app.use("/inv", inventoryRoute)
 
-app.use(static)// File Not Found Route - must be last route in list
-app.use(async (req, res, next) => {
-  next({status: 404, message: 'Sorry, we appear to have lost that page.'})
-}) 
-
 // Index route
 app.get("/", utilities.handleErrors(baseController.buildHome))
+
+//Account route
+app.use("/account", accountRoute);
 
 // File Not Found Route - must be last route in list
 app.use(async (req, res, next) => {
