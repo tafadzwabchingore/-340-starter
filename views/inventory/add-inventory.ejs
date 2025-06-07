@@ -11,7 +11,7 @@
 
 <body>
     <%- messages() %>
-    <form action='/inv/add-inventory' method="post"> 
+    <form action='/inv/update' method="post"> 
         <div class="form-container">
             <%- classificationList %>
             <input type="text" class="input" id="invmake" name="inv_make" placeholder="Make" required <% if(locals.inv_make) { %> value="<%= locals.inv_make %>" <% } %>>
@@ -32,6 +32,9 @@
             
             <input type="text" class="input" id="invcolor" name="inv_color" placeholder="Color" required <% if(locals.inv_color) { %> value="<%= locals.inv_color %>" <% } %>>
             
-        <button class="submit-button" type="submit">Add Inventory</button>
+        <button type="submit">Update Vehicle</button>
+        <input type="hidden" name="inv_id"
+        <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
+        <% } %>>
     </form>
 </body>

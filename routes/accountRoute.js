@@ -3,9 +3,9 @@ const express = require("express");
 const router = new express.Router();
 const utilities = require('../utilities/index');
 const regValidate = require('../utilities/account-validation')
+const invController = require("../controllers/invController")
 
 const accountController = require('../controllers/accountController');
-const regValidate = require('../utilities/account-validation')
 
 router.get('/login', accountController.buildLogin);
 
@@ -15,9 +15,11 @@ router.post('/register', utilities.handleErrors(accountController.registerAccoun
 
 router.get("/", utilities.checkLogin, utilities.handleErrors(accountController.buildManagement));
 
+router.post("/update/", invController.updateInventory);
+
 router.post(
     "/register",
-    regValidate.registationRules(),
+    regValidate.registrationRules(),
     regValidate.checkRegData,
     utilities.handleErrors(accountController.registerAccount)
   )
