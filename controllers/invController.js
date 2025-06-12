@@ -218,9 +218,58 @@ invCont.getInventoryJSON = async (req, res, next) => {
 invCont.buildHome = async function (req, res) {
   let nav = await utilities.getNav()
   res.render("index", {
-    title: "Welcome to CSE Motors",
-    nav,
+  title: "Welcome to CSE Motors",
+  nav: utilities.getNav()
   })
+}
+
+/* ***************************
+ * Build Delete Confirmation View
+ * *************************** */
+
+invCont.buildDeleteView = async function (req, res) {
+  const inv_id = parseInt(req.params.inv_id);
+  const data = await invModel.getInventoryItemById(inv_id);
+  const item = data.rows[0];
+
+  const nav = await getNav(); // if you use a navigation builder
+  const name = `${item.inv_make} ${item.inv_model}`;
+
+  res.render("./inventory/delete-confirm", {
+    title: `Delete ${name}`,
+    nav,
+    inv_id: item.inv_id,
+    invMake: item.inv_make,
+    invModel: item.inv_model,
+    invYear: item.inv_year,
+    invPrice: item.inv_price,
+    errors: null
+  });
+}
+
+/* ***************************
+ * Process Inventory Deletion
+ * *************************** */
+invCont.deleteInventory = async function (req, res) {
+  const inv_id = parseInt(req.body.inv_id);
+  const deleteResult = await invModel.deleteInventoryItem(inv_id);
+
+  if (deleteResult.rowCount > 0) {
+    req.flash("notice", "The inventory item was successfully deleted.");
+    res.redirect("/inv");
+  } else {
+    req.flash("notice", "Sorry, the delete failed.");
+    res.redirect(`/inv/delete/${inv_id}`);
+  }
+}
+
+invCont.buildInventoryManagement = async function (req, res) {
+  const nav = await utilities.getNav();
+  res.render("inventory/management", {
+    title: "Inventory Management",
+    nav,
+    errors: null,
+  });
 }
 
 module.exports = invCont;

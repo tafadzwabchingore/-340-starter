@@ -115,4 +115,41 @@ async function accountLogin(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin }
+async function buildAccountUpdate(req, res) {
+  const account_id = parseInt(req.params.id);
+  const data = await accountModel.getAccountById(account_id);
+  res.render("account/update", {
+    title: "Update Account",
+    ...data.rows[0],
+    errors: null,
+  });
+}
+
+async function updateAccount(req, res) {
+  const { account_id, account_firstname, account_lastname, account_email } = req.body;
+  const updateResult = await accountModel.updateAccountDetails(account_id, account_firstname, account_lastname, account_email);
+  
+  if (updateResult.rowCount > 0) {
+    req.flash("notice", "Account information updated.");
+    res.redirect("/account");
+  } else {
+    req.flash("notice", "Update failed.");
+    res.redirect(`/account/update/${account_id}`);
+  }
+}
+
+async function updatePassword(req, res) {
+  const { account_id, account_password } = req.body;
+  const hashedPassword = await bcrypt.hash(account_password, 10);
+  const result = await accountModel.updateAccountPassword(account_id, hashedPassword);
+
+  if (result.rowCount > 0) {
+    req.flash("notice", "Password updated successfully.");
+    res.redirect("/account");
+  } else {
+    req.flash("notice", "Password update failed.");
+    res.redirect(`/account/update/${account_id}`);
+  }
+}
+
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountUpdate, updateAccount, updatePassword }

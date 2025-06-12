@@ -11,7 +11,7 @@ const express = require("express");
 const expressLayouts = require("express-ejs-layouts");
 const env = require("dotenv").config();
 const app = express();
-
+const invController = require("./controllers/invController");
 const static = require("./routes/static");
 const inventoryRoute = require('./routes/inventoryRoute');
 const accountRoute = require('./routes/accountRoute');
@@ -19,6 +19,9 @@ const utilities = require('./utilities');
 const baseController = require("./controllers/baseController");
 const bodyParser = require("body-parser");
 const cookieParser = require("cookie-parser");
+const path = require('path');
+
+app.use(express.static(path.join(__dirname, 'public')));
 // Inventory routes
 app.use("/inv", inventoryRoute);
 
@@ -36,8 +39,10 @@ app.use("/inv", inventoryRoute);
   name: 'sessionId',
 }))
 
-app.use(bodyParser.json())
-app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+//app.use(bodyParser.json())
+//app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
 
 // Express Messages Middleware
@@ -48,6 +53,12 @@ app.use(function(req, res, next){
 })
 
 app.use(utilities.checkJWTToken)
+
+app.use(async (req, res, next) => {
+  const nav = await utilities.buildNavigation();// fetch or generate nav HTML
+  res.locals.nav = nav;
+  next();
+});
 
 /* ***********************
  * View Engine and Templates
@@ -62,16 +73,22 @@ app.set("layout", "./layouts/layout") // not at views root
 
 app.use(static);
 
-// idex route
-app.get("/", function(req, res){
-  res.render("index", {title: "Home"})
-})
+// index route
+//app.get("/", function(req, res){
+  //res.render("index", {title: "Home"})
+//})
+
+// Index route
+//app.get("/", utilities.handleErrors(baseController.buildHome))
+
+//app.get("/", invController.buildHome);
+
+app.get("/", utilities.handleErrors(baseController.buildHome));
+
+app.get("/favicon.ico", (req, res) => res.status(204));
 
 // Inventory routes
 app.use("/inv", inventoryRoute)
-
-// Index route
-app.get("/", utilities.handleErrors(baseController.buildHome))
 
 //Account route
 app.use("/account", accountRoute);
@@ -81,14 +98,12 @@ app.use(async (req, res, next) => {
   next({status: 404, message: 'Sorry, we appear to have lost that page.'})
 })
 
-router.get("/", invController.buildHome)
-
 /* ***********************
 * Express Error Handler
 * Place after all other middleware
 *************************/
 app.use(async (err, req, res, next) => {
-  let nav = await utilities.getNav()
+  let nav = await utilities.buildNavigation()
   console.error(`Error at: "${req.originalUrl}": ${err.message}`)
   if(err.status == 404){ message = err.message} else {message = 'Oh no! There was a crash. Maybe try a different route?'}
   res.render("errors/error", {
@@ -112,10 +127,10 @@ app.listen(port, () => {
   console.log(`app listening on ${host}:${port}`)
 })
 
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).render('errors/error', {
-    title: 'Server Error',
-    message: err.message
-  });
-});
+//app.use((err, req, res, next) => {
+  //console.error(err.stack);
+  //res.status(500).render('errors/error', {
+    //title: 'Server Error',
+    //message: err.message
+  //});
+//});

@@ -1,43 +1,25 @@
-<!-- adds h1, good seo, and a heading for the page! -->
-<% if (title) { %>
-  <h1><%= title %></h1>
-<% } else {
-  res.redirect('/')
-  } %>
+<%- include('../partials/header') %>
+<%- include('../partials/nav', { nav }) %>
 
-<!-- displays error messages -->
-<%- messages() %>
+<h1>Delete <%= invMake %> <%= invModel %></h1>
+<p>Confirm Deletion - The delete is permanent.</p>
 
-<!-- display errors -->
-<% if (errors) { %>
-  <ul class="notice">
- <% errors.array().forEach(error => { %>
-   <li><%= error.msg %></li>
-<%  }) %>
-  </ul>
-<% } %>
+<form action="/inv/delete" method="post">
+  <input type="hidden" name="inv_id" value="<%= inv_id %>">
+  
+  <label>Make:</label>
+  <input type="text" value="<%= invMake %>" readonly><br>
 
-<!-- display the contents of the page -->
-<form id="deleteForm" class="form addvehicle-form" action="/inv/delete" method="post">
-  <p>*Confirm Deletion - The delete is permanent and CANNOT be undone.</p>
-  <fieldset class="form--fieldset addvehicle-form--fieldset"> 
+  <label>Model:</label>
+  <input type="text" value="<%= invModel %>" readonly><br>
 
-    <label for="inv_make">Make:</label>
-    <input type="text" id="inv_make" name="inv_make" placeholder="Min of 3 characters" value="<%= locals.inv_make %>" minlength="3" readonly>
-    
-    <label for="inv_model">Model:</label>
-    <input type="text" id="inv_model" name="inv_model" placeholder="Min of 3 characters" value="<%= locals.inv_model %>" minlength="3" readonly>
-    
-    <label for="inv_year">Year:</label>
-    <input type="text" id="inv_year" name="inv_year" placeholder="4-digit year" value="<%= locals.inv_year %>" pattern="^\d{4}$" readonly>
-    
-    <label for="inv_price">Price:</label>
-    <input type="text" id="inv_price" name="inv_price" placeholder="Decimal or integer" value="<%= locals.inv_price %>" pattern="^\d+(\.\d{1,2})?$" readonly>
+  <label>Year:</label>
+  <input type="text" value="<%= invYear %>" readonly><br>
 
-    <input type="submit" name="submit" value="Delete Vehicle" id="deleteBtn">
-    
-    <input type="hidden" name="inv_id"
-    <% if(locals.inv_id) { %> value="<%= locals.inv_id %>"
-    <% } %>>
-  </fieldset>
+  <label>Price:</label>
+  <input type="text" value="$<%= invPrice %>" readonly><br>
+
+  <input type="submit" value="Delete">
 </form>
+
+<%- include('../partials/footer') %>

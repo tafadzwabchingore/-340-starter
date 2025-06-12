@@ -2,13 +2,16 @@
 const express = require("express")
 const router = new express.Router() 
 const utilities = require("../utilities/index");
-const invController = require("../controllers/invController")
+const invController = require("../controllers/invController");
+const { checkAccountRole } = require("../middleware/auth");
 
 // Route to build inventory by classification view
 router.get("/type/:classificationId", invController.buildByClassificationId);
 
 // Route to build inventory by item detail view
 router.get("/detail/:invId", invController.buildByInvId);
+
+router.get("/inv", checkAccountRole, invController.buildInventoryManagement);
 
 // New JSON route to get inventory by classification ID
 router.get(
@@ -21,6 +24,24 @@ router.get(
   "/edit/:inv_id",
   utilities.handleErrors(invController.buildEditInventoryView)
 );
+
+// Deliver delete confirmation view
+router.get("/delete/:inv_id", async (req, res, next) => {
+  try {
+    await invController.buildDeleteView(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
+
+// Handle the actual delete action
+router.post("/delete", async (req, res, next) => {
+  try {
+    await invController.deleteInventory(req, res);
+  } catch (err) {
+    next(err);
+  }
+});
 
 /* ***************************
  *  Build edit inventory view
