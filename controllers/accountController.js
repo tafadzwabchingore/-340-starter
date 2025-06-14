@@ -74,6 +74,22 @@ async function registerAccount(req, res) {
 }
 
 /* ****************************************
+*  Deliver management view
+*  (Assignment 6)
+* *************************************** */
+async function buildManagement(req, res, next) {
+  let nav = await utilities.getNav()
+  let unreadMessages = await messageModel.getUnreadMessageCountByAccountId(res.locals.accountData.account_id)
+
+  res.render("account/management", {
+    title: "Account Management",
+    nav,
+    errors: null,
+    unreadMessages
+  })
+}
+
+/* ****************************************
  *  Process login request
  * ************************************ */
 async function accountLogin(req, res) {
@@ -152,4 +168,4 @@ async function updatePassword(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountUpdate, updateAccount, updatePassword }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountUpdate, updateAccount, updatePassword, buildManagement }

@@ -15,6 +15,3 @@ router.get("/intentional-error", (req, res, next) => {
 });
 
 module.exports = router;
-
-
-

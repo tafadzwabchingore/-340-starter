@@ -1,7 +1,37 @@
-<title><% title %></title>
 <h1><% title %></h1>
 
+<!-- Content Heading -->
+<% if (title) { %>
+    <h1><%= title %></h1>
+    <% } else {
+      res.redirect('register')
+} %>
+
+<!-- Flash message -->
 <%- messages() %>
+<% if (errors) { %>
+    <ul class="notice">
+        <% 
+        let showEmailError = false;
+        errors.array().forEach(error => { 
+            if (error.msg === 'A valid email is required.') {
+                showEmailError = true;
+            } 
+        });
+
+        if (showEmailError) { %>
+            <li>A valid email is required.</li>
+        <% } else {
+            errors.array().forEach(error => { 
+                if (error.msg !== 'Invalid value' && error.msg !== 'A valid email is required.') { %>
+                    <li><%= error.msg %></li>
+                <% }
+            }); 
+        } %>
+    </ul>
+<% } %>
+
+
 
 <div class="login-container">
   <form class="form-container" id="loginForm" action="/account/login" method="post">
@@ -16,6 +46,6 @@
     <div class="sumbit-button">
       <button type="submit">Login</button>
     </div>
-    <h1>No Account? <a href="../account/register.ejs">Sign-up</a></h1>
+    <h1>No Account? <a href="register">Sign-up</a></h1>
   </form>
 </div>
