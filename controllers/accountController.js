@@ -48,6 +48,7 @@ async function registerAccount(req, res) {
   }
 
 
+
   const regResult = await accountModel.registerAccount(
     account_firstname,
     account_lastname,
@@ -71,22 +72,6 @@ async function registerAccount(req, res) {
       nav,
     })
   }
-}
-
-/* ****************************************
-*  Deliver management view
-*  (Assignment 6)
-* *************************************** */
-async function buildManagement(req, res, next) {
-  let nav = await utilities.getNav()
-  let unreadMessages = await messageModel.getUnreadMessageCountByAccountId(res.locals.accountData.account_id)
-
-  res.render("account/management", {
-    title: "Account Management",
-    nav,
-    errors: null,
-    unreadMessages
-  })
 }
 
 /* ****************************************
@@ -168,4 +153,4 @@ async function updatePassword(req, res) {
   }
 }
 
-module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountUpdate, updateAccount, updatePassword, buildManagement }
+module.exports = { buildLogin, buildRegister, registerAccount, accountLogin, buildAccountUpdate, updateAccount, updatePassword }
